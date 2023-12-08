@@ -1517,9 +1517,17 @@ class HealthPlugin(private var channel: MethodChannel? = null) :
                 }
             }
 
-            assert(map.size <= 1) { "getTotalStepsInInterval should return only one interval. Found: ${map.size}" }
+            // assert(map.size <= 1) { "getTotalStepsInInterval should return only one interval. Found: ${map.size}" }
             Handler(context!!.mainLooper).run {
-                result.success(map.values.firstOrNull())
+                if (map.size > 1) {
+                    var sum = 0;
+                    for (i in map.values) {
+                        sum += i
+                    }
+                    result.success(sum)
+                } else {
+                    result.success(map.values.firstOrNull())
+                }
             }
         }
 
